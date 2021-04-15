@@ -54,7 +54,7 @@ class DevByteFragment : Fragment() {
         //The ViewModelProviders (plural) is deprecated.  
         //ViewModelProviders.of(this, DevByteViewModel.Factory(activity.application)).get(DevByteViewModel::class.java)
         ViewModelProvider(this, DevByteViewModel.Factory(activity.application)).get(DevByteViewModel::class.java)
-                
+
     }
 
     /**
@@ -96,10 +96,10 @@ class DevByteFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding: FragmentDevByteBinding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_dev_byte,
-                container,
-                false)
+            inflater,
+            R.layout.fragment_dev_byte,
+            container,
+            false)
         // Set the lifecycleOwner so DataBinding can observe LiveData
         binding.setLifecycleOwner(viewLifecycleOwner)
 
@@ -177,10 +177,10 @@ class DevByteAdapter(val callback: VideoClick) : RecyclerView.Adapter<DevByteVie
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DevByteViewHolder {
         val withDataBinding: DevbyteItemBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context),
-                DevByteViewHolder.LAYOUT,
-                parent,
-                false)
+            LayoutInflater.from(parent.context),
+            DevByteViewHolder.LAYOUT,
+            parent,
+            false)
         return DevByteViewHolder(withDataBinding)
     }
 
@@ -204,7 +204,7 @@ class DevByteAdapter(val callback: VideoClick) : RecyclerView.Adapter<DevByteVie
  * ViewHolder for DevByte items. All work is done by data binding.
  */
 class DevByteViewHolder(val viewDataBinding: DevbyteItemBinding) :
-        RecyclerView.ViewHolder(viewDataBinding.root) {
+    RecyclerView.ViewHolder(viewDataBinding.root) {
     companion object {
         @LayoutRes
         val LAYOUT = R.layout.devbyte_item

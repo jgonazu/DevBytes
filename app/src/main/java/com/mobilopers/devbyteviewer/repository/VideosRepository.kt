@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2018, The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,3 +16,27 @@
  */
 
 package com.mobilopers.devbyteviewer.repository
+
+ import androidx.lifecycle.LiveData
+ import androidx.lifecycle.Transformations
+ import com.mobilopers.devbyteviewer.database.VideoDatabase
+ import com.mobilopers.devbyteviewer.database.asDomainModel
+ import com.mobilopers.devbyteviewer.domain.Video
+ import com.mobilopers.devbyteviewer.network.Network
+ import com.mobilopers.devbyteviewer.network.asDatabaseModel
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+
+ class VideosRepository (val dataBase: VideoDatabase) {
+
+     val videos: LiveData<List<Video>> = Transformations.map(dataBase.videoDao.getVideos()) {
+         it.asDomainModel()
+     }
+
+     suspend fun refreshVideos() {
+         withContext(Dispatchers.IO) {
+             val playlist = Network.devbytes.getPlaylist().await()
+             dataBase.videoDao.addVideo(*playlist.asDatabaseModel())
+         }
+     }
+ }

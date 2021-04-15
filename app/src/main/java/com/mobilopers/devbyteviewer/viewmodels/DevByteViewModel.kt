@@ -19,10 +19,10 @@ package com.mobilopers.devbyteviewer.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.mobilopers.devbyteviewer.database.getDatabase
 import com.mobilopers.devbyteviewer.domain.Video
-import com.mobilopers.devbyteviewer.network.Network
+import com.mobilopers.devbyteviewer.repository.VideosRepository
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 /**
  * DevByteViewModel designed to store and manage UI-related data in a lifecycle conscious way. This
@@ -36,50 +36,16 @@ import java.io.IOException
  */
 class DevByteViewModel(application: Application) : AndroidViewModel(application) {
 
-    /**
-     *
-     */
+    private val database = getDatabase(application)
+    private val videosRepository = VideosRepository(database)
 
-    /**
-     *
-     */
-
-    /**
-     * A playlist of videos that can be shown on the screen. This is private to avoid exposing a
-     * way to set this value to observers.
-     */
-    private val _playlist = MutableLiveData<List<Video>>()
-
-    /**
-     * A playlist of videos that can be shown on the screen. Views should use this to get access
-     * to the data.
-     */
-    val playlist: LiveData<List<Video>>
-        get() = _playlist
-
-    /**
-     * init{} is called immediately when this ViewModel is created.
-     */
     init {
-        refreshDataFromNetwork()
-    }
-
-    /**
-     * Refresh data from network and pass it via LiveData. Use a coroutine launch to get to
-     * background thread.
-     */
-    private fun refreshDataFromNetwork() = viewModelScope.launch {
-        try {
-            val playlist = Network.devbytes.getPlaylist().await()
-            _playlist.postValue(playlist.asDomainModel())
-        } catch (networkError: IOException) {
-            // Show an infinite loading spinner if the request fails
-            // challenge exercise: show an error to the user if the network request fails
+        viewModelScope.launch {
+            videosRepository.refreshVideos()
         }
     }
 
-    /**
-     */
+    val playlist = videosRepository.videos
 
     /**
      * Factory for constructing DevByteViewModel with parameter
