@@ -1,0 +1,4 @@
+#EXTM3U url-tvg="https://raw.githubusercontent.com/dracohe/CARLOS/master/guide_IPTV.xml"
+
+#EXTINF:-1 tvg-logo="" group-title="TDT" tvg-id="VAMOS", VAMOS 
+acestream://069431a1199eb2545a14c0a724095e57bdc58e9c
